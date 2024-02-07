@@ -1,0 +1,120 @@
+---
+title: "Homework 1"
+subtitle: "Part 3, Spring 2024"
+author: "Conor Mulligan"
+format:
+  pdf:
+    output-file: "mulligan-c-hwk1-3"
+    output-ext:  "pdf"
+    header-includes:
+      - \usepackage{float}
+      - \floatplacement{table}{H}
+editor: 
+  render on save: true
+
+---
+
+```{r}
+#| include: false
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest,
+               scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
+               ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
+               kableExtra,quarto)
+
+```
+
+
+```{r}
+#| include: false
+ #| eval: false
+load("submission1/Hwk1_workspace.Rdata")
+
+```
+
+## Enrollment Data
+
+1. The current dataset includes 19,126,783 total observations.
+
+2. There are 18 different plan_types in the data.
+
+3. Below is the table I was able to create using the data for a count of plan types by year. Notably, I was unable to remove the years 2007-2009, despite all of the code in Plan_Data running successfully.
+
+
+```{r} 
+#| echo: false
+#| label: tbl-plans
+#| tbl-cap: "Plan types by year"
+
+options(knitr.kable.NA = 0)
+knitr::kable(plan.type.year1, 
+             col.names=c("Plan Type","2007","2008","2009","2010","2011",
+                         "2012","2013","2014","2015"),
+             format.args=list(big.mark=","), booktabs = TRUE) %>%
+             kable_styling(latex_options=c("scale_down"))
+```
+
+4. After removing the SNP, EGHP and 800-Series plans from the data, the table is outputted as the following.  
+
+```{r}
+#| echo: false
+#| label: tbl-plans2
+#| tbl-cap: Revised plan types by year
+
+options(knitr.kable.NA = 0)
+knitr::kable(plan.type.year2, 
+             col.names=c("Plan Type","2007","2008","2009","2010","2011",
+                         "2012","2013","2014","2015"),
+             format.args=list(big.mark=","), booktabs = TRUE) %>%
+             kable_styling(latex_options=c("scale_down"))
+``` 
+
+5. After merging the data using an inner-join function, I provide the graph below using a simple figure function to display what I created in my analysis workspace. 
+
+```{r}
+#| echo: false
+#| label: fig-enroll
+#| fig-cap: "Average Enrollment"
+
+fig.avg.enrollment
+
+```
+
+\newpage
+
+# Premium Data
+
+6. After merging the market penetration data, the graph below is displayed.
+
+```{r}
+#| echo: false
+#| label: fig-premium
+#| fig-cap: "Average Premiums"
+
+fig.avg.premium
+
+```
+
+7. The graph of zero premium plans is below.
+
+```{r}
+#| echo: false
+#| label: fig-zero
+#| fig-cap: "Share of $0 Premium Plans"
+
+fig.percent.zero
+
+```
+
+
+\newpage
+
+# Summary Questions
+
+8. The 800 series plans are most likely excluded because they are employer or union sponsored enrollments, and this probably often sidesteps the general requirement of being 65 or older to qualify, or a US resident for at least 5 years.
+
+9. Costs are managed when plans charge a $0 premium, as it is likely that the provider has entered into a contract with a network of hospitals or physicians, and the savings that come with this are passed onto enrollees. This does not mean the beneficiary actually pays $0, as they may have to pay deductibles and other fees beyond the no-cost premium.
+
+10. I was actually able to load the code this time and begin picking away at it, although I still encountered many difficulties. I was able to consolidate much of my difficulties after understanding how to properly use Quarto to move my work that I did in the separate analysis file over. This saved much time when trying to compile the PDF, which oftentimes failed prior.
+
